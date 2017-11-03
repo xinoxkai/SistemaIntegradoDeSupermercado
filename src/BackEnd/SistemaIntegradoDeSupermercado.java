@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sistemaintegradodesupermercado;
+package BackEnd;
 
 /**
  *
@@ -23,6 +23,7 @@ public class SistemaIntegradoDeSupermercado {
         b.insertar(10064, "5toelemento", 5, 9.75);b.insertar(10001, "Lambo Sesto Elemento", 1, 2920000);
         
         b.display(b.root);
+        b.Desconectar();
     }
     
 }

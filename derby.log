@@ -1,55 +1,13 @@
-Thu Oct 12 19:33:33 CST 2017 Thread[main,5,main] Cleanup action starting
-java.sql.SQLException: No se ha encontrado la base de datos 'itemsDB'.
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
-	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
-	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
-	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
-	at org.apache.derby.impl.jdbc.EmbedConnection.handleDBNotFound(Unknown Source)
-	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
-	at org.apache.derby.jdbc.InternalDriver.getNewEmbedConnection(Unknown Source)
-	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
-	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
-	at org.apache.derby.jdbc.AutoloadedDriver.connect(Unknown Source)
-	at java.sql.DriverManager.getConnection(DriverManager.java:664)
-	at java.sql.DriverManager.getConnection(DriverManager.java:270)
-	at sistemaintegradodesupermercado.ArbolDeBusquedaBinaria.Conectar(ArbolDeBusquedaBinaria.java:41)
-	at sistemaintegradodesupermercado.SistemaIntegradoDeSupermercado.main(SistemaIntegradoDeSupermercado.java:20)
-Caused by: ERROR XJ004: No se ha encontrado la base de datos 'itemsDB'.
-	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.wrapArgsForTransportAcrossDRDA(Unknown Source)
-	... 15 more
-============= begin nested exception, level (1) ===========
-ERROR XJ004: No se ha encontrado la base de datos 'itemsDB'.
-	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.wrapArgsForTransportAcrossDRDA(Unknown Source)
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
-	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
-	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
-	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
-	at org.apache.derby.impl.jdbc.EmbedConnection.handleDBNotFound(Unknown Source)
-	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
-	at org.apache.derby.jdbc.InternalDriver.getNewEmbedConnection(Unknown Source)
-	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
-	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
-	at org.apache.derby.jdbc.AutoloadedDriver.connect(Unknown Source)
-	at java.sql.DriverManager.getConnection(DriverManager.java:664)
-	at java.sql.DriverManager.getConnection(DriverManager.java:270)
-	at sistemaintegradodesupermercado.ArbolDeBusquedaBinaria.Conectar(ArbolDeBusquedaBinaria.java:41)
-	at sistemaintegradodesupermercado.SistemaIntegradoDeSupermercado.main(SistemaIntegradoDeSupermercado.java:20)
-============= end nested exception, level (1) ===========
-Cleanup action completed
 ----------------------------------------------------------------
-Thu Oct 12 19:33:33 CST 2017:
- Iniciando instancia a816c00e-015f-135d-786c-000007331d48 de Derby, versión The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): 
-en el directorio de base de datos C:\Users\oscar\Documents\NetBeansProjects\SistemaIntegradoDeSupermercado\itemsDB con el cargador de clases sun.misc.Launcher$AppClassLoader@610455d6
-Cargado desde file:/C:/Program%20Files/Java/jdk1.8.0_121/db/lib/derby.jar
+Fri Nov 03 09:49:45 CST 2017:
+ Iniciando instancia a816c00e-015f-8292-e16b-000006d10ad8 de Derby, versión The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): 
+en el directorio de base de datos /home/oscar/Documentos/NetBeansProjects/SistemaIntegradoDeSupermercado/itemsDB con el cargador de clases sun.misc.Launcher$AppClassLoader@d716361
+Cargado desde file:/home/oscar/.GlassFishServer/javadb/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_121-b13
-user.dir=C:\Users\oscar\Documents\NetBeansProjects\SistemaIntegradoDeSupermercado
-os.name=Windows 10
+java.runtime.version=1.8.0_141-8u141-b15-1~deb9u1-b15
+user.dir=/home/oscar/Documentos/NetBeansProjects/SistemaIntegradoDeSupermercado
+os.name=Linux
 os.arch=amd64
-os.version=10.0
+os.version=4.9.0-4-amd64
 derby.system.home=null
 Cargador de clases de base de datos iniciado - derby.database.classpath=''

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package sistemaintegradodesupermercado;
+package BackEnd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -49,6 +49,14 @@ public class ArbolDeBusquedaBinaria {
             } catch (SQLException ex1) {
                 Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex1);
             }
+        }
+    }
+    
+    public void Desconectar(){
+        try {
+            conexion.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
