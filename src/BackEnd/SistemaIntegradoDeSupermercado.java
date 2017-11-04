@@ -15,7 +15,8 @@ public class SistemaIntegradoDeSupermercado {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        // This is a testing main class without UI, Set FrontEnd.mainMenu as default
+        // runing/main class to test the full application
         ArbolDeBusquedaBinaria b=new ArbolDeBusquedaBinaria();
         b.bd.Conectar("local","usuario","pass");
         

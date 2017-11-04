@@ -16,7 +16,6 @@
  */
 package FrontEnd;
 
-import BackEnd.ArbolDeBusquedaBinaria;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,13 +29,11 @@ public class Login extends javax.swing.JFrame {
      */
     //private BaseDeDatos bd;
     public mainMenu mainMenu;
-    public ArbolDeBusquedaBinaria b;
     
-    public Login(ArbolDeBusquedaBinaria b, mainMenu form) {
+    public Login(mainMenu form) {
         mainMenu=form;
         initComponents();
         setLocationRelativeTo(null);
-        this.b=b;
     }
 
     private Login() {
@@ -63,6 +60,7 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
+        setBackground(new java.awt.Color(137, 173, 208));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -154,7 +152,7 @@ public class Login extends javax.swing.JFrame {
 
     private void iniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionActionPerformed
         // TODO add your handling code here:
-        if(b.bd.Conectar(urlText.getText(), userText.getText(), passText.getText())){
+        if(mainMenu.db.Conectar(urlText.getText(), userText.getText(), passText.getText())){
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(null, "No se pudo conectar, verifique sus credenciales y URL", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -164,7 +162,7 @@ public class Login extends javax.swing.JFrame {
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-        b.bd.Desconectar();
+        //mainMenu.db.Desconectar();
     }//GEN-LAST:event_formWindowClosed
 
     /**

@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  * @author oscar
  */
 public class BaseDeDatos {
-    private Connection conexion;
+    public Connection conexion;
     
     public boolean Conectar(String url, String user, String pass){
         String urls=new String("local");

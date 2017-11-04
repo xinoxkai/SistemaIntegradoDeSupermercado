@@ -120,7 +120,7 @@ public class ArbolDeBusquedaBinaria {
         nodoArbol nuevoNodo= new nodoArbol(itemID, itemName, itemQuant, itemPrice);
         if(root==null){
             root=nuevoNodo;
-            return bd.insertarEnBase(itemID, itemName, itemQuant, itemPrice);//insercion en DB
+            return bd.insertarEnBase(itemID, itemName, itemQuant, itemPrice);//DB operation
         }
         nodoArbol actual=root;
         nodoArbol padre=null;

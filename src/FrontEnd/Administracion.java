@@ -16,7 +16,7 @@
  */
 package FrontEnd;
 
-import BackEnd.ArbolDeBusquedaBinaria;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -28,13 +28,11 @@ public class Administracion extends javax.swing.JFrame {
      * Creates new form Administracion
      */
     public mainMenu mainMenu;
-    public ArbolDeBusquedaBinaria b;
     
-    public Administracion(ArbolDeBusquedaBinaria b,mainMenu form) {
+    public Administracion(mainMenu form) {
         mainMenu=form;
         initComponents();
         setLocationRelativeTo(null);
-        this.b=b;
     }
 
     private Administracion() {
@@ -269,7 +267,12 @@ public class Administracion extends javax.swing.JFrame {
 
     private void agregarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarArtActionPerformed
         // TODO add your handling code here:
-        b.insertar(10095, "1erelemento", 25, 1.65);
+        
+        if(mainMenu.b.insertar(Integer.parseInt(codigoJtext.getText()), nombreJtext.getText(), Integer.parseInt(cantidadJtext.getText()), Double.parseDouble(precioJtext.getText()))){
+            JOptionPane.showMessageDialog(null,"Item Agregado");
+        }else{
+            JOptionPane.showMessageDialog(null, "Error al agregar item","Advertencia",JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_agregarArtActionPerformed
 
     /**

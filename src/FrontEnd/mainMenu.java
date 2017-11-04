@@ -17,6 +17,7 @@
 package FrontEnd;
 
 import BackEnd.ArbolDeBusquedaBinaria;
+import BackEnd.BaseDeDatos;
 
 /**
  *
@@ -27,7 +28,8 @@ public class mainMenu extends javax.swing.JFrame {
     /**
      * Creates new form mainMenu
      */
-    ArbolDeBusquedaBinaria b=new ArbolDeBusquedaBinaria();
+    public ArbolDeBusquedaBinaria b=new ArbolDeBusquedaBinaria();
+    public BaseDeDatos db=new BaseDeDatos();
     
     public mainMenu() {
         initComponents();
@@ -39,7 +41,7 @@ public class mainMenu extends javax.swing.JFrame {
         botonVentas.setEnabled(false);
         botonAdmin.setEnabled(false);
         botonCerrarSesion.setEnabled(false);
-        Login login=new Login(b, this);
+        Login login=new Login(this);
         login.setVisible(true);
     }
     
@@ -138,8 +140,9 @@ public class mainMenu extends javax.swing.JFrame {
 
     private void botonAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAdminActionPerformed
         // TODO add your handling code here:
+        b.bd=this.db;
         this.setVisible(false);
-        Administracion admin=new Administracion(b, this);
+        Administracion admin=new Administracion(this);
         admin.setVisible(true);
     }//GEN-LAST:event_botonAdminActionPerformed
 
@@ -150,7 +153,7 @@ public class mainMenu extends javax.swing.JFrame {
 
     private void botonCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCerrarSesionActionPerformed
         // TODO add your handling code here:
-        b.bd.Desconectar();
+        db.Desconectar();
         iniciarSesion();
     }//GEN-LAST:event_botonCerrarSesionActionPerformed
 
