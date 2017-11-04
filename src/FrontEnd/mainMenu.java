@@ -64,6 +64,7 @@ public class mainMenu extends javax.swing.JFrame {
         botonAdmin = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         botonCerrarSesion = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema Integrado de Supermercado");
@@ -74,6 +75,7 @@ public class mainMenu extends javax.swing.JFrame {
                 formWindowClosed(evt);
             }
         });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         botonVentas.setText("Ventas");
         botonVentas.setToolTipText("Procesar ventas en caja");
@@ -83,6 +85,7 @@ public class mainMenu extends javax.swing.JFrame {
                 botonVentasActionPerformed(evt);
             }
         });
+        getContentPane().add(botonVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(584, 253, 120, 110));
 
         botonAdmin.setText("Administracion");
         botonAdmin.setToolTipText("Administrar inventario");
@@ -91,6 +94,7 @@ public class mainMenu extends javax.swing.JFrame {
                 botonAdminActionPerformed(evt);
             }
         });
+        getContentPane().add(botonAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(769, 253, 120, 110));
 
         jToolBar1.setRollover(true);
 
@@ -105,28 +109,10 @@ public class mainMenu extends javax.swing.JFrame {
         });
         jToolBar1.add(botonCerrarSesion);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(584, Short.MAX_VALUE)
-                .addComponent(botonVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65)
-                .addComponent(botonAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 228, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43))
-        );
+        getContentPane().add(jToolBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 920, 25));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/supermercado.jpg"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 20, 940, 390));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -196,6 +182,7 @@ public class mainMenu extends javax.swing.JFrame {
     private javax.swing.JButton botonAdmin;
     private javax.swing.JButton botonCerrarSesion;
     private javax.swing.JButton botonVentas;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }
