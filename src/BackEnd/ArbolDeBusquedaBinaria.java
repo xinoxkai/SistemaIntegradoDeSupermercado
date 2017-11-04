@@ -16,13 +16,6 @@
  */
 package BackEnd;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author oscar
@@ -30,34 +23,14 @@ import java.util.logging.Logger;
 public class ArbolDeBusquedaBinaria {
     
     public nodoArbol root;
-    private Connection conexion;
+    public BaseDeDatos bd=new BaseDeDatos();
     
     public ArbolDeBusquedaBinaria() {
         this.root=null;
     }
 
-    public void Conectar(){
-        try {
-            conexion=DriverManager.getConnection("jdbc:derby:itemsDB");
-        } catch (SQLException ex) {
-            Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
-            try {
-                conexion=DriverManager.getConnection("jdbc:derby:itemsDB;create=true");
-                String sentenciaSQL="create table ITEMS(ITEMID CHAR(5) NOT NULL, ITEMNAME VARCHAR(30) NOT NULL, ITEMQUANT NUMERIC(8,2) NOT NULL,ITEMPRICE NUMERIC(16,2) NOT NULL)";
-                PreparedStatement statement=conexion.prepareStatement(sentenciaSQL);
-                statement.execute();
-            } catch (SQLException ex1) {
-                Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-        }
-    }
-    
-    public void Desconectar(){
-        try {
-            conexion.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void setBd(BaseDeDatos bd) {
+        this.bd = bd;
     }
     
     public boolean busqueda(Integer itemID){
@@ -143,24 +116,11 @@ public class ArbolDeBusquedaBinaria {
         return sucesor;
     }
     
-    public void insertar(Integer itemID, String itemName, Integer itemQuant, double itemPrice){
+    public boolean insertar(Integer itemID, String itemName, Integer itemQuant, double itemPrice){
         nodoArbol nuevoNodo= new nodoArbol(itemID, itemName, itemQuant, itemPrice);
         if(root==null){
             root=nuevoNodo;
-            //insercion en DB
-            try {
-                String sentenciaSQL="INSERT INTO ITEMS(ITEMID, ITEMNAME, ITEMQUANT, ITEMPRICE) VALUES"+"(?,?,?,?)";
-                PreparedStatement preparedStatement;
-                preparedStatement = conexion.prepareStatement(sentenciaSQL);
-                preparedStatement.setInt(1, nuevoNodo.getItemID());
-                preparedStatement.setString(2, nuevoNodo.getItemName());
-                preparedStatement.setInt(3, nuevoNodo.getItemQuant());
-                preparedStatement.setDouble(4, nuevoNodo.getItemPrice());
-                preparedStatement.execute();
-            } catch (SQLException ex) {
-                Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return;
+            return bd.insertarEnBase(itemID, itemName, itemQuant, itemPrice);//insercion en DB
         }
         nodoArbol actual=root;
         nodoArbol padre=null;
@@ -170,35 +130,13 @@ public class ArbolDeBusquedaBinaria {
                 actual=actual.getIzquierdo();
                 if(actual==null){
                     padre.setIzquierdo(nuevoNodo);
-                    try {
-                        String sentenciaSQL="INSERT INTO ITEMS(ITEMID, ITEMNAME, ITEMQUANT, ITEMPRICE) VALUES"+"(?,?,?,?)";
-                        PreparedStatement preparedStatement=conexion.prepareStatement(sentenciaSQL);
-                        preparedStatement.setInt(1, nuevoNodo.getItemID());
-                        preparedStatement.setString(2, nuevoNodo.getItemName());
-                        preparedStatement.setInt(3, nuevoNodo.getItemQuant());
-                        preparedStatement.setDouble(4, nuevoNodo.getItemPrice());
-                        preparedStatement.execute();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    return;
+                    return bd.insertarEnBase(itemID, itemName, itemQuant, itemPrice);
                 }
             }else{
                 actual=actual.getDerecho();
                 if(actual==null){
                     padre.setDerecho(nuevoNodo);
-                    try {
-                        String sentenciaSQL="INSERT INTO ITEMS(ITEMID, ITEMNAME, ITEMQUANT, ITEMPRICE) VALUES"+"(?,?,?,?)";
-                        PreparedStatement preparedStatement=conexion.prepareStatement(sentenciaSQL);
-                        preparedStatement.setInt(1, nuevoNodo.getItemID());
-                        preparedStatement.setString(2, nuevoNodo.getItemName());
-                        preparedStatement.setInt(3, nuevoNodo.getItemQuant());
-                        preparedStatement.setDouble(4, nuevoNodo.getItemPrice());
-                        preparedStatement.execute();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    return;
+                    return bd.insertarEnBase(itemID, itemName, itemQuant, itemPrice);
                 }
             }
         }

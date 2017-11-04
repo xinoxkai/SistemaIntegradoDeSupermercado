@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Fri Nov 03 09:49:45 CST 2017:
- Iniciando instancia a816c00e-015f-8292-e16b-000006d10ad8 de Derby, versión The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): 
-en el directorio de base de datos /home/oscar/Documentos/NetBeansProjects/SistemaIntegradoDeSupermercado/itemsDB con el cargador de clases sun.misc.Launcher$AppClassLoader@d716361
+Sat Nov 04 02:43:20 CST 2017:
+ Iniciando instancia a816c00e-015f-8632-da48-00000597f040 de Derby, versión The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): 
+en el directorio de base de datos /home/oscar/Documentos/NetBeansProjects/SistemaIntegradoDeSupermercado/base con el cargador de clases sun.misc.Launcher$AppClassLoader@d716361
 Cargado desde file:/home/oscar/.GlassFishServer/javadb/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_141-8u141-b15-1~deb9u1-b15

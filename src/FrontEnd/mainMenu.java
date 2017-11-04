@@ -16,6 +16,8 @@
  */
 package FrontEnd;
 
+import BackEnd.ArbolDeBusquedaBinaria;
+
 /**
  *
  * @author oscar
@@ -25,10 +27,26 @@ public class mainMenu extends javax.swing.JFrame {
     /**
      * Creates new form mainMenu
      */
+    ArbolDeBusquedaBinaria b=new ArbolDeBusquedaBinaria();
+    
     public mainMenu() {
         initComponents();
-        Login login=new Login();
+        setLocationRelativeTo(null);
+        iniciarSesion();
+    }
+    
+    public void iniciarSesion(){
+        botonVentas.setEnabled(false);
+        botonAdmin.setEnabled(false);
+        botonCerrarSesion.setEnabled(false);
+        Login login=new Login(b, this);
         login.setVisible(true);
+    }
+    
+    public void habilitarBotones(){
+        botonVentas.setEnabled(true);
+        botonAdmin.setEnabled(true);
+        botonCerrarSesion.setEnabled(true);
     }
 
     /**
@@ -40,26 +58,50 @@ public class mainMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        botonVentas = new javax.swing.JButton();
+        botonAdmin = new javax.swing.JButton();
+        jToolBar1 = new javax.swing.JToolBar();
+        botonCerrarSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jButton1.setText("Ventas");
-        jButton1.setToolTipText("Procesar ventas en caja");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        setTitle("Sistema Integrado de Supermercado");
+        setLocation(new java.awt.Point(0, 0));
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
             }
         });
 
-        jButton2.setText("Administracion");
-        jButton2.setToolTipText("Administrar inventario");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        botonVentas.setText("Ventas");
+        botonVentas.setToolTipText("Procesar ventas en caja");
+        botonVentas.setEnabled(false);
+        botonVentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                botonVentasActionPerformed(evt);
             }
         });
+
+        botonAdmin.setText("Administracion");
+        botonAdmin.setToolTipText("Administrar inventario");
+        botonAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAdminActionPerformed(evt);
+            }
+        });
+
+        jToolBar1.setRollover(true);
+
+        botonCerrarSesion.setText("Cerrar Sesion");
+        botonCerrarSesion.setFocusable(false);
+        botonCerrarSesion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonCerrarSesion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botonCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCerrarSesionActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(botonCerrarSesion);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,37 +109,50 @@ public class mainMenu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(584, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                .addComponent(botonVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(65, 65, 65)
+                .addComponent(botonAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(253, Short.MAX_VALUE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 228, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(botonVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void botonVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVentasActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
         Ventas ventas=new Ventas(this);
         ventas.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_botonVentasActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void botonAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAdminActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        Administracion admin=new Administracion(this);
+        Administracion admin=new Administracion(b, this);
         admin.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_botonAdminActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        b.bd.Desconectar();
+    }//GEN-LAST:event_formWindowClosed
+
+    private void botonCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCerrarSesionActionPerformed
+        // TODO add your handling code here:
+        b.bd.Desconectar();
+        iniciarSesion();
+    }//GEN-LAST:event_botonCerrarSesionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -135,7 +190,9 @@ public class mainMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton botonAdmin;
+    private javax.swing.JButton botonCerrarSesion;
+    private javax.swing.JButton botonVentas;
+    private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }

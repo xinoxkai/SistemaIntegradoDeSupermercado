@@ -16,6 +16,8 @@
  */
 package FrontEnd;
 
+import BackEnd.BaseDeDatos;
+
 /**
  *
  * @author oscar
@@ -26,10 +28,12 @@ public class Ventas extends javax.swing.JFrame {
      * Creates new form Ventas
      */
     private final mainMenu mainMenu;
+    private BaseDeDatos bd;
     
     public Ventas(mainMenu form) {
         initComponents();
         mainMenu=form;
+        setLocationRelativeTo(null);
     }
 
     private Ventas() {
@@ -54,9 +58,9 @@ public class Ventas extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        agregar = new javax.swing.JButton();
+        remover = new javax.swing.JButton();
+        imprimir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Panel de Ventas");
@@ -66,6 +70,7 @@ public class Ventas extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setAutoCreateColumnsFromModel(false);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -94,11 +99,11 @@ public class Ventas extends javax.swing.JFrame {
 
         jLabel4.setText("Cantidad:");
 
-        jButton1.setText("Agregar");
+        agregar.setText("Agregar");
 
-        jButton2.setText("Remover de la venta");
+        remover.setText("Remover de la venta");
 
-        jButton3.setText("Imprimir Ticket");
+        imprimir.setText("Imprimir Ticket");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,16 +135,16 @@ public class Ventas extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(33, 33, 33)
-                                .addComponent(jButton2)
+                                .addComponent(remover)
                                 .addContainerGap(32, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jButton1)
+                                        .addComponent(agregar)
                                         .addGap(72, 72, 72))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jButton3)
+                                        .addComponent(imprimir)
                                         .addGap(47, 47, 47))))))))
         );
         layout.setVerticalGroup(
@@ -155,7 +160,7 @@ public class Ventas extends javax.swing.JFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(agregar))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -165,9 +170,9 @@ public class Ventas extends javax.swing.JFrame {
                         .addGap(27, 27, 27))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(97, 97, 97)
-                        .addComponent(jButton2)
+                        .addComponent(remover)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)
+                        .addComponent(imprimir)
                         .addGap(62, 62, 62))))
         );
 
@@ -219,9 +224,8 @@ public class Ventas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton agregar;
+    private javax.swing.JButton imprimir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -231,5 +235,6 @@ public class Ventas extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JButton remover;
     // End of variables declaration//GEN-END:variables
 }
