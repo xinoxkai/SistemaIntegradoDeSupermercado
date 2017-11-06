@@ -38,51 +38,6 @@ public class ArbolDeBusquedaBinaria {
         this.root=null;
     }
     
-    public void inicializarArbol(){
-        try {
-            String sentenciaSQL="SELECT * FROM ITEMS ";
-            Statement statement=bd.conexion.createStatement();
-            ResultSet resultado=statement.executeQuery(sentenciaSQL);
-            
-            while(resultado.next()){
-                nodoArbol nuevoNodo=new nodoArbol();
-                nuevoNodo.setItemID(resultado.getInt(1));
-                nuevoNodo.setItemName(resultado.getString(2));
-                nuevoNodo.setItemQuant(resultado.getInt(3));
-                nuevoNodo.setItemPrice(resultado.getDouble(4));
-                auxNode=nuevoNodo;
-                Integer aux=nuevoNodo.getItemID();
-                
-                if(root==null){
-                    root=nuevoNodo;
-                }
-                nodoArbol actual=root;
-                nodoArbol padre;
-                while(true){
-                    padre=actual;
-                    if(aux<actual.getItemID()){
-                        actual=actual.getIzquierdo();
-                        if(actual==null){
-                            padre.setIzquierdo(nuevoNodo);
-                            return;
-
-                        }
-                    }else{
-                        actual=actual.getDerecho();
-                        if(actual==null){
-                            padre.setDerecho(nuevoNodo);
-                            return;
-                        }
-                    }
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Error en inicializacion del ABB", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            //ex.printStackTrace();
-        }
-    }
-    
     public boolean busqueda(Integer itemID){
         nodoArbol actual=root;
         while(actual!=null){
@@ -167,7 +122,7 @@ public class ArbolDeBusquedaBinaria {
         return sucesor;
     }
     
-    public boolean insertar(Integer itemID, String itemName, Integer itemQuant, double itemPrice){
+    public boolean insertar(Integer itemID, String itemName, Integer itemQuant, Double itemPrice){
         nodoArbol nuevoNodo= new nodoArbol(itemID, itemName, itemQuant, itemPrice);
         if(root==null){
             root=nuevoNodo;
@@ -189,6 +144,33 @@ public class ArbolDeBusquedaBinaria {
                 if(actual==null){
                     padre.setDerecho(nuevoNodo);
                     return bd.insertarEnBase(itemID, itemName, itemQuant, itemPrice);
+                }
+            }
+        }
+    }
+    
+    public void insertar(Integer itemID, String itemName, Integer itemQuant, Double itemPrice, Boolean init){
+        nodoArbol nuevoNodo= new nodoArbol(itemID, itemName, itemQuant, itemPrice);
+        if(root==null){
+            root=nuevoNodo;
+            return;
+        }
+        nodoArbol actual=root;
+        nodoArbol padre=null;
+        while(true){
+            padre=actual;
+            if(itemID<actual.getItemID()){
+                actual=actual.getIzquierdo();
+                if(actual==null){
+                    padre.setIzquierdo(nuevoNodo);
+                    return;
+                    
+                }
+            }else{
+                actual=actual.getDerecho();
+                if(actual==null){
+                    padre.setDerecho(nuevoNodo);
+                    return;
                 }
             }
         }

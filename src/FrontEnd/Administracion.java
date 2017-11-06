@@ -17,6 +17,11 @@
 package FrontEnd;
 
 import BackEnd.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
@@ -33,12 +38,38 @@ public class Administracion extends javax.swing.JFrame {
      */
     public mainMenu mainMenu;
     public nodoArbol nodo=new nodoArbol();
+    public ModeloTablaArticulos modelo=new ModeloTablaArticulos();
     
     public Administracion(mainMenu form) {
         mainMenu=form;
         initComponents();
         setLocationRelativeTo(null);
         inicializarColumnas();
+        inicializarArbol();
+    }
+    
+    public void inicializarArbol(){
+        try {
+            String sentenciaSQL="SELECT * FROM ITEMS ";
+            Statement statement=mainMenu.b.bd.conexion.createStatement();
+            ResultSet resultado=statement.executeQuery(sentenciaSQL);
+            
+            while(resultado.next()){
+                nodoArbol Nodo=new nodoArbol();
+                Nodo.setItemID(resultado.getInt(1));
+                Nodo.setItemName(resultado.getString(2));
+                Nodo.setItemQuant(resultado.getInt(3));
+                Nodo.setItemPrice(resultado.getDouble(4));
+                
+                mainMenu.b.insertar(Nodo.getItemID(), Nodo.getItemName(), Nodo.getItemQuant(), Nodo.getItemPrice(), true);
+                this.modelo.articulos.add(Nodo);
+            }
+            jTable1.repaint();
+        } catch (SQLException ex) {
+            Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error en inicializacion del ABB", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            //ex.printStackTrace();
+        }
     }
     
     private void inicializarColumnas(){
@@ -77,7 +108,6 @@ public class Administracion extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
@@ -112,12 +142,8 @@ public class Administracion extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setAutoCreateColumnsFromModel(false);
-
-        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${}");
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, jTable1);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
+        jTable1.setAutoCreateRowSorter(true);
+        jTable1.setModel(modelo);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("DejaVu Math TeX Gyre", 2, 18)); // NOI18N
@@ -301,8 +327,6 @@ public class Administracion extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        bindingGroup.bind();
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -402,6 +426,5 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField nombreJtext;
     private javax.swing.JTextField precioJtext;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

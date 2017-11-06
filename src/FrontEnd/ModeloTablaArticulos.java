@@ -16,7 +16,9 @@
  */
 package FrontEnd;
 
-import BackEnd.ArbolDeBusquedaBinaria;
+import BackEnd.nodoArbol;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -24,22 +26,13 @@ import javax.swing.table.AbstractTableModel;
  * @author oscar
  */
 
-public class tablaProductos extends AbstractTableModel{
+public class ModeloTablaArticulos extends AbstractTableModel{
     
-    ArbolDeBusquedaBinaria b=new ArbolDeBusquedaBinaria();
-    
-    public tablaProductos(ArbolDeBusquedaBinaria arbol) {
-        b=arbol;
-    }
-    
-    
-
-    
-    Object valor=null;
+    List<nodoArbol> articulos=new ArrayList<>();
     
     @Override
     public int getRowCount() {
-        return b.itemCount(b.root);
+        return articulos.size();
     }
 
     @Override
@@ -49,15 +42,16 @@ public class tablaProductos extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        
-            switch(columnIndex){
-                case 0: valor=b.auxNode.getItemID();
+        nodoArbol nodo=articulos.get(rowIndex);
+        Object valor=null;
+        switch(columnIndex){
+                case 0: valor=nodo.getItemID();
                         break;
-                case 1: valor=b.auxNode.getItemName();
+                case 1: valor=nodo.getItemName();
                         break;
-                case 2: valor=b.auxNode.getItemQuant();
+                case 2: valor=nodo.getItemQuant();
                         break;
-                case 3: valor=b.auxNode.getItemPrice();
+                case 3: valor=nodo.getItemPrice();
             }
             return valor;
     }

@@ -47,7 +47,6 @@ public class mainMenu extends javax.swing.JFrame {
         botonVentas.setEnabled(true);
         botonAdmin.setEnabled(true);
         botonCerrarSesion.setEnabled(true);
-        b.inicializarArbol();
     }
 
     /**
