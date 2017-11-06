@@ -95,7 +95,22 @@ public class BaseDeDatos {
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(BaseDeDatos.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public boolean actualizarEnBase(Integer itemID, Integer itemQuant){
+        try {
+            String sentenciaSQL = "UPDATE ITEMS SET ITEMQUANT = ? WHERE ITEMID = ? ";
+            PreparedStatement preparedStatement;
+            preparedStatement = conexion.prepareStatement(sentenciaSQL);
+            preparedStatement.setInt(1, itemQuant);
+            preparedStatement.setInt(2, itemID);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(BaseDeDatos.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }

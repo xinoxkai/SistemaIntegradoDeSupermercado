@@ -16,14 +16,7 @@
  */
 package BackEnd;
 
-import FrontEnd.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -53,6 +46,21 @@ public class ArbolDeBusquedaBinaria {
         return false;
     }
     
+    public void eliminar(Integer itemID, Integer ItemQuant){
+        nodoArbol actual=root;
+        while(actual!=null){
+            if(Objects.equals(actual.getItemID(), itemID)){
+                actual.setItemQuant(actual.getItemQuant()-ItemQuant);
+                bd.actualizarEnBase(itemID, actual.getItemQuant());
+                return;
+            }else if(actual.getItemID()>itemID){
+                actual=actual.getIzquierdo();
+            }else{
+                actual=actual.getDerecho();
+            }
+        }
+    }
+    
     public boolean eliminar(Integer itemID){
         nodoArbol padre=root;
         nodoArbol actual=root;
@@ -78,20 +86,37 @@ public class ArbolDeBusquedaBinaria {
             }
             if(esIzquierdo==true){
                 padre.setIzquierdo(null);
+                bd.eliminarEnBase(actual.getItemID());
             }else{
                 padre.setDerecho(null);
+                bd.eliminarEnBase(actual.getItemID());
             }
         }
         //Caso 2 : Nodo tiene solo un hijo
         else if(actual.getDerecho()==null){
             if(actual==root){
+                root=actual.getIzquierdo();
+            }else if(esIzquierdo){
+                bd.eliminarEnBase(actual.getItemID());
+                padre.setIzquierdo(actual.getIzquierdo());
+            }else{
+                bd.eliminarEnBase(actual.getItemID());
+                padre.setDerecho(actual.getIzquierdo());
+            }
+        }
+        else if(actual.getIzquierdo()==null){
+            if(actual==root){
                 root=actual.getDerecho();
             }else if(esIzquierdo){
+                bd.eliminarEnBase(actual.getItemID());
                 padre.setIzquierdo(actual.getDerecho());
             }else{
+                bd.eliminarEnBase(actual.getItemID());
                 padre.setDerecho(actual.getDerecho());
             }
-        }else if(actual.getIzquierdo()!=null && actual.getDerecho()!=null){
+        }
+        else if(actual.getIzquierdo()!=null && actual.getDerecho()!=null){
+            bd.eliminarEnBase(actual.getItemID());
             nodoArbol sucesor=getSucesor(actual);
             if(actual==root){
                 root=sucesor;
@@ -182,15 +207,5 @@ public class ArbolDeBusquedaBinaria {
             System.out.print(" "+ root.toString());
             display(root.getDerecho());
         }
-    }
-    
-    public Integer itemCount(nodoArbol root){
-        if(root==null){
-            return 0;
-        }
-        else{
-            return (itemCount(root.getIzquierdo())+1+itemCount(root.getDerecho()));
-        }
-    }
-    
+    }  
 }

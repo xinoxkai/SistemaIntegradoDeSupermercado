@@ -17,9 +17,11 @@
 package FrontEnd;
 
 import BackEnd.*;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -37,7 +39,6 @@ public class Administracion extends javax.swing.JFrame {
      * Creates new form Administracion
      */
     public mainMenu mainMenu;
-    public nodoArbol nodo=new nodoArbol();
     public ModeloTablaArticulos modelo=new ModeloTablaArticulos();
     
     public Administracion(mainMenu form) {
@@ -50,6 +51,7 @@ public class Administracion extends javax.swing.JFrame {
     
     public void inicializarArbol(){
         try {
+            //mainMenu.b.root=null;
             String sentenciaSQL="SELECT * FROM ITEMS ";
             Statement statement=mainMenu.b.bd.conexion.createStatement();
             ResultSet resultado=statement.executeQuery(sentenciaSQL);
@@ -65,6 +67,7 @@ public class Administracion extends javax.swing.JFrame {
                 this.modelo.articulos.add(Nodo);
             }
             jTable1.repaint();
+            JOptionPane.showMessageDialog(null, "Inicializando tabla");
         } catch (SQLException ex) {
             Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error en inicializacion del ABB", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -142,6 +145,7 @@ public class Administracion extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setAutoCreateColumnsFromModel(false);
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(modelo);
         jScrollPane1.setViewportView(jTable1);
@@ -190,6 +194,11 @@ public class Administracion extends javax.swing.JFrame {
         jLabel8.setText("Nombre:");
 
         eliminarArt.setText("Eliminar Articulo");
+        eliminarArt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarArtActionPerformed(evt);
+            }
+        });
 
         buscarArt.setText("Buscar");
         buscarArt.addActionListener(new java.awt.event.ActionListener() {
@@ -344,27 +353,63 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_nombreJtextActionPerformed
 
     private void agregarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarArtActionPerformed
-        if(mainMenu.b.insertar(Integer.parseInt(codigoJtext.getText()), nombreJtext.getText(), Integer.parseInt(cantidadJtext.getText()), Double.parseDouble(precioJtext.getText()))){
-            JOptionPane.showMessageDialog(null,"Item Agregado");
+        if(mainMenu.b.busqueda(Integer.parseInt(codigoJtext.getText()))){
+            JOptionPane.showMessageDialog(null, "ID ya existe en el sistema, por favor ingrese un ID distinto", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }else{
-            JOptionPane.showMessageDialog(null, "Error al agregar item","Advertencia",JOptionPane.WARNING_MESSAGE);
+            if(mainMenu.b.insertar(Integer.parseInt(codigoJtext.getText()), nombreJtext.getText(), Integer.parseInt(cantidadJtext.getText()), Double.parseDouble(precioJtext.getText()))){
+                inicializarArbol();
+                JOptionPane.showMessageDialog(null,"Item Agregado");
+                codigoJtext.setText("");
+                nombreJtext.setText("");
+                cantidadJtext.setText("");
+                precioJtext.setText("");
+            }else{
+                JOptionPane.showMessageDialog(null, "Error al agregar item","Advertencia",JOptionPane.WARNING_MESSAGE);
+            }
         }
     }//GEN-LAST:event_agregarArtActionPerformed
 
     private void eliminarArtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eliminarArtCodigoKeyPressed
         // TODO add your handling code here:
-        
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            nodoArbol nodo;
+            if(mainMenu.b.busqueda(Integer.parseInt(eliminarArtCodigo.getText()))){
+                nodo=mainMenu.b.auxNode;
+                eliminarArtNombre.setText(nodo.getItemName());
+                eliminarArtCantidad.setText(nodo.getItemQuant().toString());
+            }else{
+                JOptionPane.showMessageDialog(null, "No se encontro el articulo");
+            }
+        }
     }//GEN-LAST:event_eliminarArtCodigoKeyPressed
 
     private void buscarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarArtActionPerformed
+        nodoArbol nodo;
         if(mainMenu.b.busqueda(Integer.parseInt(eliminarArtCodigo.getText()))){
-            //nodo=mainMenu.b.busqueda;
+            nodo=mainMenu.b.auxNode;
             eliminarArtNombre.setText(nodo.getItemName());
             eliminarArtCantidad.setText(nodo.getItemQuant().toString());
         }else{
             JOptionPane.showMessageDialog(null, "No se encontro el articulo");
         }
     }//GEN-LAST:event_buscarArtActionPerformed
+
+    private void eliminarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarArtActionPerformed
+        nodoArbol nodo;
+        mainMenu.b.busqueda(Integer.parseInt(eliminarArtCodigo.getText()));
+        nodo=mainMenu.b.auxNode;
+        int respuesta=JOptionPane.showConfirmDialog(null, "¿Desea eliminar "+eliminarArtCantidad.getText()+" articulos del tipo "+eliminarArtNombre.getText()+"?", "Eliminar", JOptionPane.YES_NO_OPTION);
+        if(respuesta==JOptionPane.YES_OPTION){
+            if(Objects.equals(Integer.parseInt(eliminarArtCantidad.getText()), nodo.getItemQuant())){
+                mainMenu.b.eliminar(Integer.parseInt(eliminarArtCodigo.getText()));
+                JOptionPane.showMessageDialog(null, "Eliminado Completamente");
+            }else{
+                
+                System.out.print("\nSe elimina externo");
+                mainMenu.b.eliminar(Integer.parseInt(eliminarArtCodigo.getText()),Integer.parseInt(eliminarArtCantidad.getText()));
+            }
+        }
+    }//GEN-LAST:event_eliminarArtActionPerformed
 
     /**
      * @param args the command line arguments

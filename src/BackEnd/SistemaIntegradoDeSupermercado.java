@@ -26,7 +26,6 @@ public class SistemaIntegradoDeSupermercado {
         */
         b.display(b.root);
         //System.out.print(b.counter);
-        System.out.print(b.itemCount(b.root));
         b.bd.Desconectar();
     }
     
