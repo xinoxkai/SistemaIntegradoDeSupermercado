@@ -40,6 +40,7 @@ public class Administracion extends javax.swing.JFrame {
      */
     public mainMenu mainMenu;
     public ModeloTablaArticulos modelo=new ModeloTablaArticulos();
+    private boolean guardar=true;
     
     public Administracion(mainMenu form) {
         mainMenu=form;
@@ -67,7 +68,6 @@ public class Administracion extends javax.swing.JFrame {
                 this.modelo.articulos.add(Nodo);
             }
             jTable1.repaint();
-            JOptionPane.showMessageDialog(null, "Inicializando tabla");
         } catch (SQLException ex) {
             Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error en inicializacion del ABB", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -126,7 +126,7 @@ public class Administracion extends javax.swing.JFrame {
         cantidadJtext = new javax.swing.JTextField();
         precioJtext = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        agregarArt = new javax.swing.JButton();
+        guardarArt = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         eliminarArtCodigo = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -135,6 +135,7 @@ public class Administracion extends javax.swing.JFrame {
         buscarArt = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         eliminarArtCantidad = new javax.swing.JTextField();
+        nuevoArt = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -148,6 +149,11 @@ public class Administracion extends javax.swing.JFrame {
         jTable1.setAutoCreateColumnsFromModel(false);
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(modelo);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("DejaVu Math TeX Gyre", 2, 18)); // NOI18N
@@ -176,10 +182,10 @@ public class Administracion extends javax.swing.JFrame {
 
         jLabel6.setText("Precio:");
 
-        agregarArt.setText("Agregar Articulo");
-        agregarArt.addActionListener(new java.awt.event.ActionListener() {
+        guardarArt.setText("Guardar");
+        guardarArt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                agregarArtActionPerformed(evt);
+                guardarArtActionPerformed(evt);
             }
         });
 
@@ -209,6 +215,13 @@ public class Administracion extends javax.swing.JFrame {
 
         jLabel9.setText("Cantidad a Eliminar:");
 
+        nuevoArt.setText("Nuevo");
+        nuevoArt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nuevoArtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -218,54 +231,58 @@ public class Administracion extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 82, Short.MAX_VALUE)
-                                .addComponent(buscarArt)
-                                .addGap(69, 69, 69)
-                                .addComponent(eliminarArt)
-                                .addGap(50, 50, 50))
-                            .addComponent(nombreJtext)
-                            .addComponent(eliminarArtNombre)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel4))
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(codigoJtext)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel5)
+                                        .addGap(0, 82, Short.MAX_VALUE)
+                                        .addComponent(buscarArt)
+                                        .addGap(69, 69, 69)
+                                        .addComponent(eliminarArt)
+                                        .addGap(50, 50, 50))
+                                    .addComponent(nombreJtext)
+                                    .addComponent(eliminarArtNombre)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(codigoJtext)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel5)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(cantidadJtext, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel6))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(eliminarArtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel9)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cantidadJtext, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel6))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(eliminarArtCantidad)
+                                            .addComponent(precioJtext, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addGap(127, 127, 127))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(eliminarArtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel9)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(eliminarArtCantidad)
-                                    .addComponent(precioJtext, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)))))
+                                        .addComponent(jLabel2)
+                                        .addGap(122, 122, 122)))))
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(agregarArt)
-                                .addGap(168, 168, 168))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel1)
-                                    .addGap(127, 127, 127))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(122, 122, 122))))))
-                .addContainerGap())
+                        .addComponent(nuevoArt)
+                        .addGap(18, 18, 18)
+                        .addComponent(guardarArt)
+                        .addGap(169, 169, 169))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,7 +304,9 @@ public class Administracion extends javax.swing.JFrame {
                             .addComponent(precioJtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6))
                         .addGap(18, 18, 18)
-                        .addComponent(agregarArt)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(guardarArt)
+                            .addComponent(nuevoArt))
                         .addGap(50, 50, 50)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
@@ -352,12 +371,21 @@ public class Administracion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_nombreJtextActionPerformed
 
-    private void agregarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarArtActionPerformed
-        if(mainMenu.b.busqueda(Integer.parseInt(codigoJtext.getText()))){
+    private void guardarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarArtActionPerformed
+        
+        if(mainMenu.b.busqueda(Integer.parseInt(codigoJtext.getText())) && guardar){
             JOptionPane.showMessageDialog(null, "ID ya existe en el sistema, por favor ingrese un ID distinto", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }else if(mainMenu.b.busqueda(Integer.parseInt(codigoJtext.getText())) && !guardar){
+            mainMenu.b.aumentarInventario(Integer.parseInt(codigoJtext.getText()), Integer.parseInt(cantidadJtext.getText()));
+            //inicializarArbol();
+            JOptionPane.showMessageDialog(null,"Item Actualizado");
+            codigoJtext.setText("");
+            nombreJtext.setText("");
+            cantidadJtext.setText("");
+            precioJtext.setText("");
         }else{
             if(mainMenu.b.insertar(Integer.parseInt(codigoJtext.getText()), nombreJtext.getText(), Integer.parseInt(cantidadJtext.getText()), Double.parseDouble(precioJtext.getText()))){
-                inicializarArbol();
+                //inicializarArbol();
                 JOptionPane.showMessageDialog(null,"Item Agregado");
                 codigoJtext.setText("");
                 nombreJtext.setText("");
@@ -367,7 +395,7 @@ public class Administracion extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error al agregar item","Advertencia",JOptionPane.WARNING_MESSAGE);
             }
         }
-    }//GEN-LAST:event_agregarArtActionPerformed
+    }//GEN-LAST:event_guardarArtActionPerformed
 
     private void eliminarArtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eliminarArtCodigoKeyPressed
         // TODO add your handling code here:
@@ -406,10 +434,33 @@ public class Administracion extends javax.swing.JFrame {
             }else{
                 
                 System.out.print("\nSe elimina externo");
-                mainMenu.b.eliminar(Integer.parseInt(eliminarArtCodigo.getText()),Integer.parseInt(eliminarArtCantidad.getText()));
+                mainMenu.b.reducirInventario(Integer.parseInt(eliminarArtCodigo.getText()),Integer.parseInt(eliminarArtCantidad.getText()));
             }
         }
     }//GEN-LAST:event_eliminarArtActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        int clicks = evt.getClickCount();
+        int row = jTable1.rowAtPoint(evt.getPoint());
+        
+        if(clicks==2){
+            nodoArbol nodo=modelo.articulos.get(row);
+            
+            codigoJtext.setText(nodo.getItemID().toString());
+            eliminarArtCodigo.setText(nodo.getItemID().toString());
+            nombreJtext.setText(nodo.getItemName());
+            eliminarArtNombre.setText(nodo.getItemName());
+            cantidadJtext.setText(nodo.getItemQuant().toString());
+            eliminarArtCantidad.setText(nodo.getItemQuant().toString());
+            precioJtext.setText(String.valueOf(nodo.getItemPrice()));
+            guardar=false;
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void nuevoArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoArtActionPerformed
+        codigoJtext.setText("");
+        guardar=true;
+    }//GEN-LAST:event_nuevoArtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -447,7 +498,6 @@ public class Administracion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton agregarArt;
     private javax.swing.JButton buscarArt;
     private javax.swing.JTextField cantidadJtext;
     private javax.swing.JTextField codigoJtext;
@@ -455,6 +505,7 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JTextField eliminarArtCantidad;
     private javax.swing.JTextField eliminarArtCodigo;
     private javax.swing.JTextField eliminarArtNombre;
+    private javax.swing.JButton guardarArt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -470,6 +521,7 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField nombreJtext;
+    private javax.swing.JButton nuevoArt;
     private javax.swing.JTextField precioJtext;
     // End of variables declaration//GEN-END:variables
 }

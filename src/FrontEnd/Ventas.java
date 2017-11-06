@@ -17,6 +17,16 @@
 package FrontEnd;
 
 import BackEnd.BaseDeDatos;
+import BackEnd.nodoArbol;
+import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -28,12 +38,41 @@ public class Ventas extends javax.swing.JFrame {
      * Creates new form Ventas
      */
     private final mainMenu mainMenu;
-    private BaseDeDatos bd;
+    private List<nodoArbol> venta=new ArrayList<>();
+    public ModeloTablaArticulos modelo = new ModeloTablaArticulos();
     
     public Ventas(mainMenu form) {
         initComponents();
         mainMenu=form;
         setLocationRelativeTo(null);
+        inicializarArbol();
+    }
+    
+    public void inicializarArbol(){
+        try {
+            String sentenciaSQL="SELECT * FROM ITEMS ";
+            Statement statement=mainMenu.b.bd.conexion.createStatement();
+            ResultSet resultado=statement.executeQuery(sentenciaSQL);
+            
+            while(resultado.next()){
+                nodoArbol Nodo=new nodoArbol();
+                Nodo.setItemID(resultado.getInt(1));
+                Nodo.setItemName(resultado.getString(2));
+                Nodo.setItemQuant(resultado.getInt(3));
+                Nodo.setItemPrice(resultado.getDouble(4));
+                
+                mainMenu.b.insertar(Nodo.getItemID(), Nodo.getItemName(), Nodo.getItemQuant(), Nodo.getItemPrice(), true);
+                //this.modelo.articulos.add(Nodo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error en inicializacion del ABB", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            //ex.printStackTrace();
+        }
+    }
+    
+    public void procesarVenta(){
+        
     }
 
     private Ventas() {
@@ -53,10 +92,10 @@ public class Ventas extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        codigoJtext = new javax.swing.JTextField();
+        nombreJtext = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        cantidadJtext = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         agregar = new javax.swing.JButton();
         remover = new javax.swing.JButton();
@@ -71,17 +110,7 @@ public class Ventas extends javax.swing.JFrame {
         });
 
         jTable1.setAutoCreateColumnsFromModel(false);
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jTable1.setModel(modelo);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("DejaVu Math TeX Gyre", 2, 18)); // NOI18N
@@ -89,17 +118,33 @@ public class Ventas extends javax.swing.JFrame {
 
         jLabel2.setText("Codigo:");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        codigoJtext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                codigoJtextActionPerformed(evt);
+            }
+        });
+        codigoJtext.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                codigoJtextKeyPressed(evt);
             }
         });
 
         jLabel3.setText("Nombre:");
 
+        cantidadJtext.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cantidadJtextKeyPressed(evt);
+            }
+        });
+
         jLabel4.setText("Cantidad:");
 
         agregar.setText("Agregar");
+        agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarActionPerformed(evt);
+            }
+        });
 
         remover.setText("Remover de la venta");
 
@@ -120,17 +165,17 @@ public class Ventas extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(codigoJtext, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel3)
                                         .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(jTextField2))
+                                    .addComponent(nombreJtext))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cantidadJtext, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -157,9 +202,9 @@ public class Ventas extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(codigoJtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nombreJtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cantidadJtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(agregar))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
@@ -184,9 +229,44 @@ public class Ventas extends javax.swing.JFrame {
         mainMenu.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void codigoJtextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoJtextActionPerformed
+        
+    }//GEN-LAST:event_codigoJtextActionPerformed
+
+    private void codigoJtextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoJtextKeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            nodoArbol nodo;
+            if(mainMenu.b.busqueda(Integer.parseInt(codigoJtext.getText()))){
+                nodo=mainMenu.b.auxNode;
+                nombreJtext.setText(nodo.getItemName());
+                cantidadJtext.setText("1");
+                cantidadJtext.grabFocus();
+            }else{
+                JOptionPane.showMessageDialog(null, "No se encontro el articulo");
+            }
+        }
+    }//GEN-LAST:event_codigoJtextKeyPressed
+
+    private void cantidadJtextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cantidadJtextKeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            nodoArbol nodo;
+            mainMenu.b.busqueda(Integer.parseInt(codigoJtext.getText()));
+            nodo=mainMenu.b.auxNode;
+            if(Integer.parseInt(cantidadJtext.getText())>nodo.getItemQuant()){
+                JOptionPane.showMessageDialog(null, "No hay suficientes existencias de este articulo", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }else{
+                mainMenu.b.reducirInventario(Integer.parseInt(codigoJtext.getText()), Integer.parseInt(cantidadJtext.getText()));
+                nombreJtext.setText("");
+                codigoJtext.setText("");
+                cantidadJtext.setText("");
+                codigoJtext.grabFocus();
+            }
+        }
+    }//GEN-LAST:event_cantidadJtextKeyPressed
+
+    private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_agregarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -225,6 +305,8 @@ public class Ventas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregar;
+    private javax.swing.JTextField cantidadJtext;
+    private javax.swing.JTextField codigoJtext;
     private javax.swing.JButton imprimir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -232,9 +314,7 @@ public class Ventas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField nombreJtext;
     private javax.swing.JButton remover;
     // End of variables declaration//GEN-END:variables
 }

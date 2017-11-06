@@ -46,11 +46,26 @@ public class ArbolDeBusquedaBinaria {
         return false;
     }
     
-    public void eliminar(Integer itemID, Integer ItemQuant){
+    public void reducirInventario(Integer itemID, Integer itemQuant){
         nodoArbol actual=root;
         while(actual!=null){
             if(Objects.equals(actual.getItemID(), itemID)){
-                actual.setItemQuant(actual.getItemQuant()-ItemQuant);
+                actual.setItemQuant(actual.getItemQuant()-itemQuant);
+                bd.actualizarEnBase(itemID, actual.getItemQuant());
+                return;
+            }else if(actual.getItemID()>itemID){
+                actual=actual.getIzquierdo();
+            }else{
+                actual=actual.getDerecho();
+            }
+        }
+    }
+    
+    public void aumentarInventario(Integer itemID, Integer itemQuant){
+        nodoArbol actual=root;
+        while(actual!=null){
+            if(Objects.equals(actual.getItemID(), itemID)){
+                actual.setItemQuant(actual.getItemQuant()+itemQuant);
                 bd.actualizarEnBase(itemID, actual.getItemQuant());
                 return;
             }else if(actual.getItemID()>itemID){
