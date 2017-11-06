@@ -45,13 +45,13 @@ public class ModeloTablaArticulos extends AbstractTableModel{
         nodoArbol nodo=articulos.get(rowIndex);
         Object valor=null;
         switch(columnIndex){
-                case 0: valor=nodo.getItemID();
+                case 0: valor=nodo.itemID;
                         break;
-                case 1: valor=nodo.getItemName();
+                case 1: valor=nodo.itemName;
                         break;
-                case 2: valor=nodo.getItemQuant();
+                case 2: valor=nodo.itemQuant;
                         break;
-                case 3: valor=nodo.getItemPrice();
+                case 3: valor=nodo.itemPrice;
             }
             return valor;
     }

@@ -18,6 +18,7 @@ package FrontEnd;
 
 import BackEnd.*;
 import java.awt.event.KeyEvent;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -97,6 +98,27 @@ public class Administracion extends javax.swing.JFrame {
             tColumnModel.addColumn(col);
         }
         jTable1.setColumnModel(tColumnModel);
+    }
+    
+    private void actualizarTabla(){
+        try {
+            modelo.articulos.clear();
+            PreparedStatement statement = null;
+            String sentenciaSQL = "SELECT * FROM ITEMS ";
+            statement = mainMenu.b.bd.conexion.prepareStatement(sentenciaSQL);
+            ResultSet resultado = statement.executeQuery();
+            while(resultado.next()){
+                nodoArbol Nodo=new nodoArbol();
+                Nodo.setItemID(resultado.getInt(1));
+                Nodo.setItemName(resultado.getString(2));
+                Nodo.setItemQuant(resultado.getInt(3));
+                Nodo.setItemPrice(resultado.getDouble(4));
+                this.modelo.articulos.add(Nodo);
+            }
+            jTable1.repaint();
+        } catch (SQLException ex) {
+            Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private Administracion() {
@@ -377,7 +399,7 @@ public class Administracion extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "ID ya existe en el sistema, por favor ingrese un ID distinto", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }else if(mainMenu.b.busqueda(Integer.parseInt(codigoJtext.getText())) && !guardar){
             mainMenu.b.aumentarInventario(Integer.parseInt(codigoJtext.getText()), Integer.parseInt(cantidadJtext.getText()));
-            //inicializarArbol();
+            modelo.fireTableDataChanged();
             JOptionPane.showMessageDialog(null,"Item Actualizado");
             codigoJtext.setText("");
             nombreJtext.setText("");
@@ -385,7 +407,7 @@ public class Administracion extends javax.swing.JFrame {
             precioJtext.setText("");
         }else{
             if(mainMenu.b.insertar(Integer.parseInt(codigoJtext.getText()), nombreJtext.getText(), Integer.parseInt(cantidadJtext.getText()), Double.parseDouble(precioJtext.getText()))){
-                //inicializarArbol();
+                modelo.fireTableDataChanged();
                 JOptionPane.showMessageDialog(null,"Item Agregado");
                 codigoJtext.setText("");
                 nombreJtext.setText("");
@@ -430,11 +452,16 @@ public class Administracion extends javax.swing.JFrame {
         if(respuesta==JOptionPane.YES_OPTION){
             if(Objects.equals(Integer.parseInt(eliminarArtCantidad.getText()), nodo.getItemQuant())){
                 mainMenu.b.eliminar(Integer.parseInt(eliminarArtCodigo.getText()));
+                
+                actualizarTabla();
+                
+                
+                modelo.fireTableDataChanged();
                 JOptionPane.showMessageDialog(null, "Eliminado Completamente");
             }else{
-                
                 System.out.print("\nSe elimina externo");
                 mainMenu.b.reducirInventario(Integer.parseInt(eliminarArtCodigo.getText()),Integer.parseInt(eliminarArtCantidad.getText()));
+                actualizarTabla();
             }
         }
     }//GEN-LAST:event_eliminarArtActionPerformed

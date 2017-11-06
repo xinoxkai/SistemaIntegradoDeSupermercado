@@ -22,10 +22,10 @@ package BackEnd;
  */
 public class nodoArbol {
     
-    Integer itemID;
-    String itemName;
-    Integer itemQuant;
-    Double itemPrice;
+    public Integer itemID;
+    public String itemName;
+    public Integer itemQuant;
+    public Double itemPrice;
     nodoArbol izquierdo;
     nodoArbol derecho;
 

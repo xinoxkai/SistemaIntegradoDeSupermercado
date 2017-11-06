@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -45,7 +48,32 @@ public class Ventas extends javax.swing.JFrame {
         initComponents();
         mainMenu=form;
         setLocationRelativeTo(null);
+        inicializarColumnas();
         inicializarArbol();
+    }
+    
+    private void inicializarColumnas(){
+        TableColumnModel tColumnModel=new DefaultTableColumnModel();
+        
+        for(int i=0;i<4;i++){
+            TableColumn col=new TableColumn(i);
+            
+            switch(i){
+                case 0:
+                    col.setHeaderValue("ID");
+                    break;
+                case 1:
+                    col.setHeaderValue("Nombre");
+                    break;
+                case 2:
+                    col.setHeaderValue("Existencia");
+                    break;
+                case 3:
+                    col.setHeaderValue("Precio");
+            }
+            tColumnModel.addColumn(col);
+        }
+        jTable1.setColumnModel(tColumnModel);
     }
     
     public void inicializarArbol(){
@@ -255,7 +283,9 @@ public class Ventas extends javax.swing.JFrame {
             if(Integer.parseInt(cantidadJtext.getText())>nodo.getItemQuant()){
                 JOptionPane.showMessageDialog(null, "No hay suficientes existencias de este articulo", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }else{
-                mainMenu.b.reducirInventario(Integer.parseInt(codigoJtext.getText()), Integer.parseInt(cantidadJtext.getText()));
+                //mainMenu.b.reducirInventario(Integer.parseInt(codigoJtext.getText()), Integer.parseInt(cantidadJtext.getText()));
+                modelo.articulos.add(nodo);
+                modelo.fireTableDataChanged();
                 nombreJtext.setText("");
                 codigoJtext.setText("");
                 cantidadJtext.setText("");
