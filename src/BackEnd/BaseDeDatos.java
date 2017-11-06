@@ -37,7 +37,7 @@ public class BaseDeDatos {
             conexion=DriverManager.getConnection("jdbc:derby:base");
             return true;
             } catch (SQLException ex) {
-                Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
                 try {
                     conexion=DriverManager.getConnection("jdbc:derby:base;create=true");
                     String sentenciaSQL="create table ITEMS(ITEMID CHAR(5) NOT NULL, ITEMNAME VARCHAR(30) NOT NULL, ITEMQUANT NUMERIC(8,2) NOT NULL,ITEMPRICE NUMERIC(16,2) NOT NULL)";
@@ -45,7 +45,7 @@ public class BaseDeDatos {
                     statement.execute();
                     return true;
                 } catch (SQLException ex1) {
-                    Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex1);
+                    ex.printStackTrace();
                     return false;
                 }
             }
@@ -65,7 +65,7 @@ public class BaseDeDatos {
         try {
             conexion.close();
         } catch (SQLException ex) {
-            Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
     
@@ -81,12 +81,12 @@ public class BaseDeDatos {
                 preparedStatement.execute();
                 return true;
             } catch (SQLException ex) {
-                Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
                 return false;
             }
     }
     
-    public boolean removerEnBase(Integer itemID){
+    public boolean eliminarEnBase(Integer itemID){
         try {
             String sentenciaSQL="DELETE FROM ITEMS WHERE ITEMID = ?";
             PreparedStatement preparedStatement;
@@ -95,7 +95,7 @@ public class BaseDeDatos {
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(BaseDeDatos.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
             return false;
         }
     }

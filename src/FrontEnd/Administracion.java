@@ -16,7 +16,11 @@
  */
 package FrontEnd;
 
+import BackEnd.*;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -28,11 +32,37 @@ public class Administracion extends javax.swing.JFrame {
      * Creates new form Administracion
      */
     public mainMenu mainMenu;
+    public nodoArbol nodo=new nodoArbol();
     
     public Administracion(mainMenu form) {
         mainMenu=form;
         initComponents();
         setLocationRelativeTo(null);
+        inicializarColumnas();
+    }
+    
+    private void inicializarColumnas(){
+        TableColumnModel tColumnModel=new DefaultTableColumnModel();
+        
+        for(int i=0;i<4;i++){
+            TableColumn col=new TableColumn(i);
+            
+            switch(i){
+                case 0:
+                    col.setHeaderValue("ID");
+                    break;
+                case 1:
+                    col.setHeaderValue("Nombre");
+                    break;
+                case 2:
+                    col.setHeaderValue("Existencia");
+                    break;
+                case 3:
+                    col.setHeaderValue("Precio");
+            }
+            tColumnModel.addColumn(col);
+        }
+        jTable1.setColumnModel(tColumnModel);
     }
 
     private Administracion() {
@@ -47,6 +77,7 @@ public class Administracion extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
@@ -64,10 +95,13 @@ public class Administracion extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         agregarArt = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        eliminarArtCodigo = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        eliminarArtNombre = new javax.swing.JTextField();
         eliminarArt = new javax.swing.JButton();
+        buscarArt = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        eliminarArtCantidad = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -79,17 +113,11 @@ public class Administracion extends javax.swing.JFrame {
         });
 
         jTable1.setAutoCreateColumnsFromModel(false);
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${}");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, jTable1);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("DejaVu Math TeX Gyre", 2, 18)); // NOI18N
@@ -127,9 +155,24 @@ public class Administracion extends javax.swing.JFrame {
 
         jLabel7.setText("Codigo:");
 
+        eliminarArtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                eliminarArtCodigoKeyPressed(evt);
+            }
+        });
+
         jLabel8.setText("Nombre:");
 
         eliminarArt.setText("Eliminar Articulo");
+
+        buscarArt.setText("Buscar");
+        buscarArt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarArtActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("Cantidad a Eliminar:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -139,50 +182,55 @@ public class Administracion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
-                                .addComponent(agregarArt)
-                                .addGap(168, 168, 168))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel4))
-                                .addGap(18, 18, 18)
+                                .addGap(0, 82, Short.MAX_VALUE)
+                                .addComponent(buscarArt)
+                                .addGap(69, 69, 69)
+                                .addComponent(eliminarArt)
+                                .addGap(50, 50, 50))
+                            .addComponent(nombreJtext)
+                            .addComponent(eliminarArtNombre)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(nombreJtext)
-                                    .addComponent(jTextField6)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(codigoJtext)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel5)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(cantidadJtext, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel6))
-                                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(codigoJtext)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel5)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(precioJtext, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap())
+                                        .addComponent(cantidadJtext, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel6))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(eliminarArtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel9)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(eliminarArtCantidad)
+                                    .addComponent(precioJtext, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(agregarArt)
+                                .addGap(168, 168, 168))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel1)
-                                    .addGap(139, 139, 139))
+                                    .addGap(127, 127, 127))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel2)
-                                    .addGap(122, 122, 122)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(eliminarArt)
-                                .addGap(169, 169, 169))))))
+                                    .addGap(122, 122, 122))))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,13 +258,17 @@ public class Administracion extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(eliminarArtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9)
+                            .addComponent(eliminarArtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(eliminarArtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(eliminarArt))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(eliminarArt)
+                            .addComponent(buscarArt)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(46, Short.MAX_VALUE))
         );
@@ -249,6 +301,8 @@ public class Administracion extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        bindingGroup.bind();
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -266,14 +320,27 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_nombreJtextActionPerformed
 
     private void agregarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarArtActionPerformed
-        // TODO add your handling code here:
-        
         if(mainMenu.b.insertar(Integer.parseInt(codigoJtext.getText()), nombreJtext.getText(), Integer.parseInt(cantidadJtext.getText()), Double.parseDouble(precioJtext.getText()))){
             JOptionPane.showMessageDialog(null,"Item Agregado");
         }else{
             JOptionPane.showMessageDialog(null, "Error al agregar item","Advertencia",JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_agregarArtActionPerformed
+
+    private void eliminarArtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eliminarArtCodigoKeyPressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_eliminarArtCodigoKeyPressed
+
+    private void buscarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarArtActionPerformed
+        if(mainMenu.b.busqueda(Integer.parseInt(eliminarArtCodigo.getText()))){
+            //nodo=mainMenu.b.busqueda;
+            eliminarArtNombre.setText(nodo.getItemName());
+            eliminarArtCantidad.setText(nodo.getItemQuant().toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "No se encontro el articulo");
+        }
+    }//GEN-LAST:event_buscarArtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -312,9 +379,13 @@ public class Administracion extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarArt;
+    private javax.swing.JButton buscarArt;
     private javax.swing.JTextField cantidadJtext;
     private javax.swing.JTextField codigoJtext;
     private javax.swing.JButton eliminarArt;
+    private javax.swing.JTextField eliminarArtCantidad;
+    private javax.swing.JTextField eliminarArtCodigo;
+    private javax.swing.JTextField eliminarArtNombre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -323,14 +394,14 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField nombreJtext;
     private javax.swing.JTextField precioJtext;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

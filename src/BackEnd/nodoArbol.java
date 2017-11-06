@@ -22,12 +22,15 @@ package BackEnd;
  */
 public class nodoArbol {
     
-    private Integer itemID;
-    private String itemName;
-    private Integer itemQuant;
-    private double itemPrice;
-    private nodoArbol izquierdo;
-    private nodoArbol derecho;
+    Integer itemID;
+    String itemName;
+    Integer itemQuant;
+    Double itemPrice;
+    nodoArbol izquierdo;
+    nodoArbol derecho;
+
+    public nodoArbol() {
+    }
 
     public nodoArbol(Integer itemID, String itemName, Integer itemQuant, double itemPrice) {
         this.itemID = itemID;

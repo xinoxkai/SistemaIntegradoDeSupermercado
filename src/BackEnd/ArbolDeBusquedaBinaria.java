@@ -16,27 +16,78 @@
  */
 package BackEnd;
 
+import FrontEnd.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author oscar
  */
 public class ArbolDeBusquedaBinaria {
     
-    public nodoArbol root;
+    public nodoArbol root, auxNode;
     public BaseDeDatos bd=new BaseDeDatos();
     
     public ArbolDeBusquedaBinaria() {
         this.root=null;
     }
+    
+    public void inicializarArbol(){
+        try {
+            String sentenciaSQL="SELECT * FROM ITEMS ";
+            Statement statement=bd.conexion.createStatement();
+            ResultSet resultado=statement.executeQuery(sentenciaSQL);
+            
+            while(resultado.next()){
+                nodoArbol nuevoNodo=new nodoArbol();
+                nuevoNodo.setItemID(resultado.getInt(1));
+                nuevoNodo.setItemName(resultado.getString(2));
+                nuevoNodo.setItemQuant(resultado.getInt(3));
+                nuevoNodo.setItemPrice(resultado.getDouble(4));
+                auxNode=nuevoNodo;
+                Integer aux=nuevoNodo.getItemID();
+                
+                if(root==null){
+                    root=nuevoNodo;
+                }
+                nodoArbol actual=root;
+                nodoArbol padre;
+                while(true){
+                    padre=actual;
+                    if(aux<actual.getItemID()){
+                        actual=actual.getIzquierdo();
+                        if(actual==null){
+                            padre.setIzquierdo(nuevoNodo);
+                            return;
 
-    public void setBd(BaseDeDatos bd) {
-        this.bd = bd;
+                        }
+                    }else{
+                        actual=actual.getDerecho();
+                        if(actual==null){
+                            padre.setDerecho(nuevoNodo);
+                            return;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ArbolDeBusquedaBinaria.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error en inicializacion del ABB", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            //ex.printStackTrace();
+        }
     }
     
     public boolean busqueda(Integer itemID){
         nodoArbol actual=root;
         while(actual!=null){
-            if(actual.getItemID()==itemID){
+            if(Objects.equals(actual.getItemID(), itemID)){
+                auxNode=actual;
                 return true;
             }else if(actual.getItemID()>itemID){
                 actual=actual.getIzquierdo();
@@ -47,11 +98,11 @@ public class ArbolDeBusquedaBinaria {
         return false;
     }
     
-    public boolean remover(Integer itemID){
+    public boolean eliminar(Integer itemID){
         nodoArbol padre=root;
         nodoArbol actual=root;
         boolean esIzquierdo=false;
-        while(actual.getItemID()!=itemID){
+        while(!Objects.equals(actual.getItemID(), itemID)){
             padre=actual;
             if(actual.getItemID()>itemID){
                 esIzquierdo=true;
@@ -68,7 +119,7 @@ public class ArbolDeBusquedaBinaria {
         if(actual.getIzquierdo()==null && actual.getDerecho()==null){
             if(actual==root){
                 root=null;
-                //String sentencia="DELETE FROM ITEMS ";
+                bd.eliminarEnBase(actual.getItemID());//Removiendo articulo de BD
             }
             if(esIzquierdo==true){
                 padre.setIzquierdo(null);
@@ -76,7 +127,7 @@ public class ArbolDeBusquedaBinaria {
                 padre.setDerecho(null);
             }
         }
-        
+        //Caso 2 : Nodo tiene solo un hijo
         else if(actual.getDerecho()==null){
             if(actual==root){
                 root=actual.getDerecho();
@@ -120,7 +171,7 @@ public class ArbolDeBusquedaBinaria {
         nodoArbol nuevoNodo= new nodoArbol(itemID, itemName, itemQuant, itemPrice);
         if(root==null){
             root=nuevoNodo;
-            return bd.insertarEnBase(itemID, itemName, itemQuant, itemPrice);//DB operation
+            return bd.insertarEnBase(itemID, itemName, itemQuant, itemPrice);
         }
         nodoArbol actual=root;
         nodoArbol padre=null;
@@ -131,6 +182,7 @@ public class ArbolDeBusquedaBinaria {
                 if(actual==null){
                     padre.setIzquierdo(nuevoNodo);
                     return bd.insertarEnBase(itemID, itemName, itemQuant, itemPrice);
+                    
                 }
             }else{
                 actual=actual.getDerecho();
@@ -149,4 +201,14 @@ public class ArbolDeBusquedaBinaria {
             display(root.getDerecho());
         }
     }
+    
+    public Integer itemCount(nodoArbol root){
+        if(root==null){
+            return 0;
+        }
+        else{
+            return (itemCount(root.getIzquierdo())+1+itemCount(root.getDerecho()));
+        }
+    }
+    
 }

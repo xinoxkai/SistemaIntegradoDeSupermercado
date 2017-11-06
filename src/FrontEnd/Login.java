@@ -16,6 +16,7 @@
  */
 package FrontEnd;
 
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -54,10 +55,10 @@ public class Login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         userText = new javax.swing.JTextField();
-        passText = new javax.swing.JTextField();
         urlText = new javax.swing.JTextField();
         iniciarSesion = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        passField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -82,20 +83,27 @@ public class Login extends javax.swing.JFrame {
 
         jLabel4.setText("URL:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 159, -1, -1));
-        getContentPane().add(userText, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 80, 210, -1));
 
-        passText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passTextActionPerformed(evt);
+        userText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                userTextKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                userTextKeyPressed(evt);
             }
         });
-        getContentPane().add(passText, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 118, 210, -1));
+        getContentPane().add(userText, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 80, 210, -1));
 
         urlText.setText("local");
         urlText.setToolTipText("URL de la Base de Datos. Ej. \"local\" ó \"192.168.1.250:5454\"");
         urlText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 urlTextActionPerformed(evt);
+            }
+        });
+        urlText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                urlTextKeyPressed(evt);
             }
         });
         getContentPane().add(urlText, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 156, 210, -1));
@@ -110,15 +118,32 @@ public class Login extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
+        passField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passFieldActionPerformed(evt);
+            }
+        });
+        passField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                passFieldKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(121, Short.MAX_VALUE)
+                .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(69, 69, 69))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 270, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(126, Short.MAX_VALUE)
+                .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(112, 112, 112))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, -10, 400, 270));
@@ -130,13 +155,9 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_urlTextActionPerformed
 
-    private void passTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passTextActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passTextActionPerformed
-
     private void iniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionActionPerformed
         // TODO add your handling code here:
-        if(mainMenu.db.Conectar(urlText.getText(), userText.getText(), passText.getText())){
+        if(mainMenu.b.bd.Conectar(urlText.getText(), userText.getText(), passField.getText())){
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(null, "No se pudo conectar, verifique sus credenciales y URL", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -145,9 +166,49 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_iniciarSesionActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
         //mainMenu.db.Desconectar();
     }//GEN-LAST:event_formWindowClosed
+
+    private void passFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passFieldActionPerformed
+        //
+    }//GEN-LAST:event_passFieldActionPerformed
+
+    private void userTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userTextKeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            if(mainMenu.b.bd.Conectar(urlText.getText(), userText.getText(), passField.getText())){
+            this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, "No se pudo conectar, verifique sus credenciales y URL", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+            mainMenu.habilitarBotones();
+        }
+    }//GEN-LAST:event_userTextKeyPressed
+
+    private void userTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userTextKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userTextKeyTyped
+
+    private void passFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passFieldKeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            if(mainMenu.b.bd.Conectar(urlText.getText(), userText.getText(), passField.getText())){
+            this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, "No se pudo conectar, verifique sus credenciales y URL", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+            mainMenu.habilitarBotones();
+        }
+    }//GEN-LAST:event_passFieldKeyPressed
+
+    private void urlTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_urlTextKeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            if(mainMenu.b.bd.Conectar(urlText.getText(), userText.getText(), passField.getText())){
+            this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, "No se pudo conectar, verifique sus credenciales y URL", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+            mainMenu.habilitarBotones();
+        }
+    }//GEN-LAST:event_urlTextKeyPressed
 
     /**
      * @param args the command line arguments
@@ -191,7 +252,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField passText;
+    private javax.swing.JPasswordField passField;
     private javax.swing.JTextField urlText;
     private javax.swing.JTextField userText;
     // End of variables declaration//GEN-END:variables
